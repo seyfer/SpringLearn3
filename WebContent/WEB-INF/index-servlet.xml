@@ -8,7 +8,7 @@
 
 
 	<context:annotation-config></context:annotation-config>
-	<context:component-scan base-package="controllers"></context:component-scan>
+	<context:component-scan base-package="seed.seyfer.controllers"></context:component-scan>
 	<mvc:annotation-driven></mvc:annotation-driven>
 
 	<bean id="jspViewResolver"
