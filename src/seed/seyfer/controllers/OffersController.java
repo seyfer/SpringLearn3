@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import seed.seyfer.dao.Offer;
@@ -41,6 +42,14 @@ public class OffersController {
 	@RequestMapping("/createOffer")
 	public String createOffer(Model model) {
 		return "createOffer";
+	}
+
+	@RequestMapping(value="/doCreateOffer", method=RequestMethod.POST)
+	public String doCreateOffer(Model model, Offer offer) {
+		System.out.println(new Object(){}.getClass().getEnclosingMethod().getName());
+		System.out.println(offer);
+		
+		return "offers";
 	}
 
 }

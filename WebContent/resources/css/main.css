@@ -1,0 +1,15 @@
+@CHARSET "UTF-8";
+
+.formtable {
+	padding: 10px;
+	border: 1px solid;
+}
+
+input[type=text] {
+	width: 150px;
+}
+
+textarea {
+	width: 150px;
+	height: 400px;
+}

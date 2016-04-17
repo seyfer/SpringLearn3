@@ -5,6 +5,12 @@ public class Offer {
 	private String name;
 	private String email;
 	private String text;
+	
+	
+
+	public Offer() {
+		super();
+	}
 
 	public Offer(String name, String email, String text) {
 		super();
