@@ -1,13 +1,25 @@
 package seed.seyfer.dao;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import seed.seyfer.validation.ValidEmail;
+
 public class Offer {
 	private int id;
+	
+	@Size(min=5, max=100, message="name Must be between range")
 	private String name;
+	
+	@NotNull
+//	@Pattern(regexp=".*\\@.*\\..*", message="Wrong email pattern")
+	@ValidEmail(min=6)
 	private String email;
+	
+	@Size(min=5, max=255, message="text Must be between range")
 	private String text;
 	
-	
-
 	public Offer() {
 		super();
 	}

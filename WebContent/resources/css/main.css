@@ -13,3 +13,13 @@ textarea {
 	width: 150px;
 	height: 400px;
 }
+
+.control {
+	margin-left: 10px;
+}
+
+.error {
+	color: red;
+	font-size: small;
+	margin-left: 10px;
+}

@@ -25,4 +25,13 @@ public class OffersService {
 	public List<Offer> getCurrent() {
 		return this.offersDAO.getOffers();
 	}
+	
+	public int create(Offer offer) {
+		return this.offersDAO.create(offer);
+	}
+
+	public void throwTestException() {
+		// TODO Auto-generated method stub
+		offersDAO.getOffer(9999);
+	}
 }
