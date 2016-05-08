@@ -12,6 +12,17 @@
 		<welcome-file>default.htm</welcome-file>
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
+
+	<filter>
+		<display-name>springSecurityFilterChain</display-name>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
 	<servlet>
 		<description></description>
 		<display-name>index</display-name>
@@ -37,11 +48,12 @@
 		<param-value>
 		classpath:seed/seyfer/config/dao-context.xml
 		classpath:seed/seyfer/config/service-context.xml
+		classpath:seed/seyfer/config/security-context.xml
 		</param-value>
 	</context-param>
-
-	<!-- Bootstraps the root web application context before servlet initialization -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+
+
 </web-app>

@@ -33,17 +33,17 @@ public class OffersController {
 	public void setOffersService(OffersService offersService) {
 		this.offersService = offersService;
 	}
-	
-//	@ExceptionHandler(DataAccessException.class)
-//	public String handleDatabaseExc(DataAccessException ex) {
-//		return "error";
-//	}
+
+	// @ExceptionHandler(DataAccessException.class)
+	// public String handleDatabaseExc(DataAccessException ex) {
+	// return "error";
+	// }
 
 	@RequestMapping("/offers")
 	public String offers(Model model) {
 
-//		offersService.throwTestException();
-		
+		// offersService.throwTestException();
+
 		List<Offer> offers = offersService.getCurrent();
 
 		model.addAttribute("offers", offers);
@@ -53,9 +53,9 @@ public class OffersController {
 
 	@RequestMapping("/createOffer")
 	public String createOffer(Model model) {
-		
+
 		model.addAttribute("offer", new Offer());
-		
+
 		return "createOffer";
 	}
 
@@ -68,17 +68,17 @@ public class OffersController {
 		if (result.hasErrors()) {
 			System.out.println("not validates");
 
-			//debug
-//			List<ObjectError> errors = result.getAllErrors();
-//			for (ObjectError error : errors) {
-//				System.out.println(error.getDefaultMessage());
-//			}
-			
+			// debug
+			// List<ObjectError> errors = result.getAllErrors();
+			// for (ObjectError error : errors) {
+			// System.out.println(error.getDefaultMessage());
+			// }
+
 			return "createOffer";
 		} else {
 			System.out.println("valid");
 		}
-		
+
 		offersService.create(offer);
 
 		return "redirect:/offers";
