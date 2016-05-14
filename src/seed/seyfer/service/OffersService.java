@@ -6,19 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import seed.seyfer.dao.Offer;
-import seed.seyfer.dao.OffersDAO;
+import seed.seyfer.dao.OffersDao;
 
 @Service("offersService")
 public class OffersService {
 
-	private OffersDAO offersDAO;
+	private OffersDao offersDAO;
 
-	public OffersDAO getOffersDAO() {
+	public OffersDao getOffersDAO() {
 		return offersDAO;
 	}
 
 	@Autowired
-	public void setOffersDAO(OffersDAO offersDAO) {
+	public void setOffersDAO(OffersDao offersDAO) {
 		this.offersDAO = offersDAO;
 	}
 

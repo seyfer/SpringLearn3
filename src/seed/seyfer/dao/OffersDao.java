@@ -18,12 +18,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component("offersDao")
-public class OffersDAO {
+public class OffersDao {
 
 	private NamedParameterJdbcTemplate jdbc;
 
-	public OffersDAO() {
-		System.out.println("Loaded" + OffersDAO.class.getName());
+	public OffersDao() {
+		System.out.println("Loaded" + OffersDao.class.getName());
 	}
 
 	public NamedParameterJdbcTemplate getJdbc() {

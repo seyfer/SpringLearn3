@@ -14,12 +14,13 @@
 		<!-- password="admin" /> -->
 		<!-- </security:user-service> -->
 		<!-- </security:authentication-provider> -->
-		
+
 		<security:authentication-provider>
-			<security:jdbc-user-service data-source-ref="dataSource"
+			<security:jdbc-user-service
+				data-source-ref="dataSource"
 				authorities-by-username-query="select username,authority from authorities, users where users.id = authorities.user_id and username = ?" />
 		</security:authentication-provider>
-		
+
 	</security:authentication-manager>
 
 	<security:http use-expressions="true">
@@ -35,6 +36,12 @@
 		<security:intercept-url pattern="/offers"
 			access="permitAll" />
 		<security:intercept-url pattern="/login"
+			access="permitAll" />
+		<security:intercept-url pattern="/newAccount"
+			access="permitAll" />
+		<security:intercept-url pattern="/doCreateAccount"
+			access="permitAll" />
+		<security:intercept-url pattern="/accountCreated"
 			access="permitAll" />
 
 		<security:intercept-url pattern="/**" access="denyAll" />

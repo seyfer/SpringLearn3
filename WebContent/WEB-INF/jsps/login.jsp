@@ -41,6 +41,8 @@
 			</tr>
 		</table>
 	</form>
+	
+	<p><a href="<c:url value="/newAccount" />">Create New Account</a></p>
 </body>
 </html>
 
