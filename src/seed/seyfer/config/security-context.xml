@@ -25,6 +25,9 @@
 
 	<security:http use-expressions="true">
 
+		<security:intercept-url pattern="/admin"
+			access="hasAuthority('admin')" />
+
 		<security:intercept-url pattern="/createOffer"
 			access="isAuthenticated()" />
 		<security:intercept-url pattern="/doCreateOffer"
@@ -36,6 +39,10 @@
 		<security:intercept-url pattern="/offers"
 			access="permitAll" />
 		<security:intercept-url pattern="/login"
+			access="permitAll" />
+<!-- 		<security:intercept-url pattern="/logout" -->
+<!-- 			access="permitAll" /> -->
+		<security:intercept-url pattern="/loggedout"
 			access="permitAll" />
 		<security:intercept-url pattern="/newAccount"
 			access="permitAll" />
@@ -49,5 +56,6 @@
 		<security:form-login login-page="/login"
 			authentication-failure-url="/login?error=true" />
 		<!-- <security:csrf disabled="true" /> -->
+		<security:logout logout-success-url="/loggedout" />
 	</security:http>
 </beans>

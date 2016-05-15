@@ -1,8 +1,11 @@
 package seed.seyfer.dao;
 
+import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -50,5 +53,10 @@ public class UsersDao {
 	public boolean exists(String username) {
 		MapSqlParameterSource paramMap = new MapSqlParameterSource("username", username);
 		return jdbc.queryForObject("select count(*) from users where username=:username", paramMap, Integer.class) > 0;
+	}
+
+	public List<User> getAllUsers() {
+		return jdbc.query("select * from authorities, users where users.id = authorities.user_id",
+				BeanPropertyRowMapper.newInstance(User.class));
 	}
 }
