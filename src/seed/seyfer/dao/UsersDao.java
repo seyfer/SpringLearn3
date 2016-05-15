@@ -46,4 +46,9 @@ public class UsersDao {
 		return jdbc.update("insert into authorities (user_id, authority) " + "values (:user_id, :authority)",
 				parameterSourceAuthority);
 	}
+
+	public boolean exists(String username) {
+		MapSqlParameterSource paramMap = new MapSqlParameterSource("username", username);
+		return jdbc.queryForObject("select count(*) from users where username=:username", paramMap, Integer.class) > 0;
+	}
 }

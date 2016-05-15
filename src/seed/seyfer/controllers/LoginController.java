@@ -3,6 +3,8 @@ package seed.seyfer.controllers;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -42,7 +44,7 @@ public class LoginController {
 
 	@RequestMapping(value = "/doCreateAccount", method = RequestMethod.POST)
 	public String doCreateAccount(@Valid User user, BindingResult result) {
-		//debug
+		// debug
 		System.out.println(new Object() {
 		}.getClass().getEnclosingMethod().getName());
 		System.out.println(user);
@@ -63,7 +65,20 @@ public class LoginController {
 
 		user.setAuthority("user");
 		user.setEnabled(true);
-		usersService.create(user);
+		
+		if (usersService.exists(user.getUsername())) {
+			result.rejectValue("username", "DuplicateKey.user.username");
+			return "newAccount";
+		}
+		
+		try {
+			usersService.create(user);
+		} catch (DuplicateKeyException e) {
+			System.out.println(e.getClass());
+			
+			result.rejectValue("username", "DuplicateKey.user.username", e.getMostSpecificCause().getMessage());
+			return "newAccount";
+		}
 
 		return "accountCreated";
 	}

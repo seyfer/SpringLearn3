@@ -23,3 +23,9 @@ textarea {
 	font-size: small;
 	margin-left: 10px;
 }
+
+.valid {
+	color: green;
+	font-size: small;
+	margin-left: 10px;
+}

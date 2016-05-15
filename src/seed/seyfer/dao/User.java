@@ -1,10 +1,27 @@
 package seed.seyfer.dao;
 
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
+
 public class User {
+	
+	@NotBlank(message="username can't be blank")
+	@Size(min=3, max=16)
+	@Pattern(regexp="^\\w+$", message="must contain only letters, numbers, underscore")
 	private String username;
+	
+	@NotBlank(message="must not be blank")
+	@Pattern(regexp="^\\S+$", message="must not containt spaces")
+	@Size(min=8, max=20, message="password must be between 8 and 20")
 	private String password;
 	private boolean enabled = false;
 	private String authority;
+	
+	@NotBlank
+	@Email
 	private String email;
 
 	public User() {

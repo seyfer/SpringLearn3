@@ -27,4 +27,8 @@ public class UsersService {
 	public int create(User user) {
 		return this.usersDAO.create(user);
 	}
+
+	public boolean exists(String username) {
+		return this.usersDAO.exists(username);
+	}
 }
