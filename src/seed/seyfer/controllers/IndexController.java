@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -33,42 +34,44 @@ public class IndexController {
 	public void setUsersService(UsersService usersService) {
 		this.usersService = usersService;
 	}
-	
+
 	@RequestMapping("/")
 	public String showHome(HttpSession session) {
 
 		session.setAttribute("name", "lol");
-		
-		//debug
+
+		// debug
 		this.checkRole();
 
 		return "home";
 	}
-	
+
 	private boolean checkRole() {
 		// get security context from thread local
-        SecurityContext context = SecurityContextHolder.getContext();
-        if (context == null)
-            return false;
+		SecurityContext context = SecurityContextHolder.getContext();
+		if (context == null)
+			return false;
 
-        Authentication authentication = context.getAuthentication();
-        if (authentication == null)
-            return false;
+		Authentication authentication = context.getAuthentication();
+		if (authentication == null)
+			return false;
 
-        for (GrantedAuthority auth : authentication.getAuthorities()) {
-        	System.out.println(auth.toString());
-        }
-        
+		for (GrantedAuthority auth : authentication.getAuthorities()) {
+			System.out.println(auth.toString());
+		}
+
 		return true;
 	}
 
 	@RequestMapping("/admin")
 	public String showAdmin(Model model) {
-		
+
+		// throw new AccessDeniedException("test");
+
 		List<User> users = usersService.getAllUsers();
-		
+
 		model.addAttribute("users", users);
-		
+
 		return "admin";
 	}
 

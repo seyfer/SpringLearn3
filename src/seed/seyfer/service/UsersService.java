@@ -3,10 +3,9 @@ package seed.seyfer.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
-import seed.seyfer.dao.Offer;
-import seed.seyfer.dao.OffersDao;
 import seed.seyfer.dao.User;
 import seed.seyfer.dao.UsersDao;
 
@@ -24,6 +23,7 @@ public class UsersService {
 		this.usersDAO = usersDAO;
 	}
 
+	@Secured("ROLE_ADMIN")
 	public int create(User user) {
 		return this.usersDAO.create(user);
 	}
@@ -32,6 +32,7 @@ public class UsersService {
 		return this.usersDAO.exists(username);
 	}
 
+	@Secured("ROLE_ADMIN")
 	public List<User> getAllUsers() {
 		return this.usersDAO.getAllUsers();
 	}

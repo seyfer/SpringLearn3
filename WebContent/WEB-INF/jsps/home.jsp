@@ -20,7 +20,6 @@
 
 	<a href="<c:url value="/admin" />">Admin</a>
 
-
 	<p>
 		<sec:authorize access="isAuthenticated()">
 			<sec:authentication property="principal" var="currentPrincipal" />

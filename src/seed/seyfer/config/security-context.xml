@@ -6,27 +6,29 @@
 
 
 	<security:authentication-manager>
-		<!-- <security:authentication-provider> -->
-		<!-- <security:user-service> -->
-		<!-- <security:user name="seyfer" authorities="admin" -->
-		<!-- password="root" /> -->
-		<!-- <security:user name="admin" authorities="admin" -->
-		<!-- password="admin" /> -->
-		<!-- </security:user-service> -->
-		<!-- </security:authentication-provider> -->
-
 		<security:authentication-provider>
-			<security:jdbc-user-service
+<!-- 			<security:user-service id="staticUserService"> -->
+<!-- 				<security:user name="seyfer" authorities="admin" -->
+<!-- 					password="root" /> -->
+<!-- 				<security:user name="admin" authorities="admin" -->
+<!-- 					password="admin" /> -->
+<!-- 			</security:user-service> -->
+
+			<security:jdbc-user-service id="jdbcUserService"
 				data-source-ref="dataSource"
-				authorities-by-username-query="select username,authority from authorities, users where users.id = authorities.user_id and username = ?" />
+				authorities-by-username-query="select username,authority from authorities, users where users.id = authorities.user_id and binary username = ?"
+				users-by-username-query="select username, password, enabled from users where binary username = ?" />
 		</security:authentication-provider>
 
 	</security:authentication-manager>
 
 	<security:http use-expressions="true">
 
+		<!-- <security:intercept-url pattern="/admin" -->
+		<!-- access="permitAll" /> -->
+
 		<security:intercept-url pattern="/admin"
-			access="hasAuthority('admin')" />
+			access="hasAuthority('admin') OR hasRole('ADMIN')" />
 
 		<security:intercept-url pattern="/createOffer"
 			access="isAuthenticated()" />
@@ -40,9 +42,11 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/login"
 			access="permitAll" />
-<!-- 		<security:intercept-url pattern="/logout" -->
-<!-- 			access="permitAll" /> -->
+		<!-- <security:intercept-url pattern="/logout" -->
+		<!-- access="permitAll" /> -->
 		<security:intercept-url pattern="/loggedout"
+			access="permitAll" />
+		<security:intercept-url pattern="/accessDenied"
 			access="permitAll" />
 		<security:intercept-url pattern="/newAccount"
 			access="permitAll" />
@@ -57,5 +61,12 @@
 			authentication-failure-url="/login?error=true" />
 		<!-- <security:csrf disabled="true" /> -->
 		<security:logout logout-success-url="/loggedout" />
+
+		<security:access-denied-handler
+			error-page="/accessDenied" />
+		<security:remember-me key="offersAppKey" user-service-ref="jdbcUserService" />
 	</security:http>
+
+	<security:global-method-security
+		secured-annotations="enabled"></security:global-method-security>
 </beans>

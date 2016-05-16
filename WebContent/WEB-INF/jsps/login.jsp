@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
@@ -8,7 +8,7 @@
 <title>Login Page</title>
 
 <!-- default header name is X-CSRF-TOKEN -->
-<meta name="_csrf_header" content="${_csrf.headerName}"/>
+<meta name="_csrf_header" content="${_csrf.headerName}" />
 <link href="${pageContext.request.contextPath}/static/css/main.css"
 	rel="stylesheet" type="text/css" />
 
@@ -23,9 +23,10 @@
 
 	<form name='f' action='${pageContext.request.contextPath}/login'
 		method='POST'>
-		
-		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-		
+
+		<input type="hidden" name="${_csrf.parameterName}"
+			value="${_csrf.token}" />
+
 		<table class="formtable">
 			<tr>
 				<td>User:</td>
@@ -36,13 +37,19 @@
 				<td><input type='password' name='password' /></td>
 			</tr>
 			<tr>
+				<td>Remember me:</td>
+				<td><input type='checkbox' name='remember-me' checked="checked" /></td>
+			</tr>
+			<tr>
 				<td colspan='2'><input name="submit" type="submit"
 					value="Login" /></td>
 			</tr>
 		</table>
 	</form>
-	
-	<p><a href="<c:url value="/newAccount" />">Create New Account</a></p>
+
+	<p>
+		<a href="<c:url value="/newAccount" />">Create New Account</a>
+	</p>
 </body>
 </html>
 

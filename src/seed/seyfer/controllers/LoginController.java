@@ -34,10 +34,10 @@ public class LoginController {
 		this.usersService = usersService;
 	}
 
-	// @RequestMapping("/login")
-	// public String showLogin() {
-	// return "login";
-	// }
+	@RequestMapping("/accessDenied")
+	public String showAccessDenied() {
+		return "accessDenied";
+	}
 
 	@RequestMapping("/loggedout")
 	public String showLoggedout() {
