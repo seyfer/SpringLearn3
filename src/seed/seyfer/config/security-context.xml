@@ -6,14 +6,16 @@
 
 
 	<security:authentication-manager>
-		<security:authentication-provider>
+<!-- 		<security:authentication-provider> -->
 <!-- 			<security:user-service id="staticUserService"> -->
 <!-- 				<security:user name="seyfer" authorities="admin" -->
 <!-- 					password="root" /> -->
 <!-- 				<security:user name="admin" authorities="admin" -->
 <!-- 					password="admin" /> -->
 <!-- 			</security:user-service> -->
-
+<!-- 		</security:authentication-provider> -->
+		<security:authentication-provider>
+			<security:password-encoder ref="passwordEncoder"></security:password-encoder>
 			<security:jdbc-user-service id="jdbcUserService"
 				data-source-ref="dataSource"
 				authorities-by-username-query="select username,authority from authorities, users where users.id = authorities.user_id and binary username = ?"
@@ -64,9 +66,14 @@
 
 		<security:access-denied-handler
 			error-page="/accessDenied" />
-		<security:remember-me key="offersAppKey" user-service-ref="jdbcUserService" />
+		<security:remember-me key="offersAppKey"
+			user-service-ref="jdbcUserService" />
 	</security:http>
 
 	<security:global-method-security
 		secured-annotations="enabled"></security:global-method-security>
+
+	<bean id="passwordEncoder"
+		class="org.springframework.security.crypto.password.StandardPasswordEncoder">
+	</bean>
 </beans>

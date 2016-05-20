@@ -43,6 +43,7 @@
 	<c:if test="${pageContext.request.userPrincipal.name != null}">
 		<a href="javascript:document.getElementById('logout').submit()">Logout</a>
 	</c:if>
+	</p>
 
 	<hr>
 

@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class UsersDao {
 
 	private NamedParameterJdbcTemplate jdbc;
+
+	@Autowired
+	private PasswordEncoder passworEncoder;
 
 	public UsersDao() {
 		System.out.println("Loaded" + UsersDao.class.getName());
@@ -34,7 +38,16 @@ public class UsersDao {
 
 	@Transactional
 	public int create(User user) {
-		BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(user);
+		// BeanPropertySqlParameterSource parameterSource = new
+		// BeanPropertySqlParameterSource(user);
+
+		MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+
+		parameterSource.addValue("username", user.getUsername());
+		parameterSource.addValue("password", passworEncoder.encode(user.getPassword()));
+		parameterSource.addValue("email", user.getEmail());
+		parameterSource.addValue("enabled", user.isEnabled());
+
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbc.update(
 				"insert into users (username, password, email, enabled) "
@@ -44,7 +57,7 @@ public class UsersDao {
 		String userId = keyHolder.getKey().toString();
 		MapSqlParameterSource parameterSourceAuthority = new MapSqlParameterSource();
 		parameterSourceAuthority.addValue("user_id", userId);
-		parameterSourceAuthority.addValue("authority", parameterSource.getValue("authority"));
+		parameterSourceAuthority.addValue("authority", user.getAuthority());
 
 		return jdbc.update("insert into authorities (user_id, authority) " + "values (:user_id, :authority)",
 				parameterSourceAuthority);
