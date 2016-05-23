@@ -55,17 +55,20 @@ public class OffersDao {
 		return offer;
 	}
 
-	public int update(Offer offer) {
+	public boolean update(Offer offer) {
 		BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(offer);
 
-		return jdbc.update("update offers set " + "name=:name, text=:text, email=:email where id=:id", parameterSource);
+		jdbc.update("update offers set " + "name=:name, text=:text, email=:email where id=:id", parameterSource);
+
+		return true;
 	}
 
-	public int create(Offer offer) {
+	public boolean create(Offer offer) {
 		BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(offer);
 
-		return jdbc.update("insert into offers (name, text, email) " + "values (:name, :text, :email)",
-				parameterSource);
+		jdbc.update("insert into offers (name, email, text) " + "values (:name, :email, :text)", parameterSource);
+
+		return true;
 	}
 
 	@Transactional

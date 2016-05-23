@@ -10,7 +10,7 @@
 
 	<beans profile="dev">
 		<context:property-placeholder
-			location="com/caveofprogramming/spring/web/test/config/jdbc.properties" />
+			location="seed/seyfer/test/config/jdbc.properties" />
 
 		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 			destroy-method="close">

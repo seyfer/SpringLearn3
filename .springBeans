@@ -11,6 +11,7 @@
 		<config>src/seed/seyfer/config/service-context.xml</config>
 		<config>WebContent/WEB-INF/index-servlet.xml</config>
 		<config>src/seed/seyfer/config/security-context.xml</config>
+		<config>test/seed/seyfer/test/config/datasource.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

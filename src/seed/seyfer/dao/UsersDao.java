@@ -37,7 +37,7 @@ public class UsersDao {
 	}
 
 	@Transactional
-	public int create(User user) {
+	public boolean create(User user) {
 		// BeanPropertySqlParameterSource parameterSource = new
 		// BeanPropertySqlParameterSource(user);
 
@@ -59,8 +59,10 @@ public class UsersDao {
 		parameterSourceAuthority.addValue("user_id", userId);
 		parameterSourceAuthority.addValue("authority", user.getAuthority());
 
-		return jdbc.update("insert into authorities (user_id, authority) " + "values (:user_id, :authority)",
+		jdbc.update("insert into authorities (user_id, authority) " + "values (:user_id, :authority)",
 				parameterSourceAuthority);
+
+		return true;
 	}
 
 	public boolean exists(String username) {

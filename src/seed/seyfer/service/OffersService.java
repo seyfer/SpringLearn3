@@ -28,7 +28,7 @@ public class OffersService {
 	}
 
 	@Secured({ "ROLE_ADMIN", "ROLE_USER" })
-	public int create(Offer offer) {
+	public boolean create(Offer offer) {
 		return this.offersDAO.create(offer);
 	}
 
