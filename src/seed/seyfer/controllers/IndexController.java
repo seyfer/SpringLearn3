@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
@@ -25,6 +27,7 @@ import seed.seyfer.service.UsersService;
 public class IndexController {
 
 	private UsersService usersService;
+	private static Logger logger = LogManager.getLogger(IndexController.class);
 
 	public UsersService getUsersService() {
 		return usersService;
@@ -38,6 +41,8 @@ public class IndexController {
 	@RequestMapping("/")
 	public String showHome(HttpSession session) {
 
+		logger.info("show home page");
+		
 		session.setAttribute("name", "lol");
 
 		// debug
