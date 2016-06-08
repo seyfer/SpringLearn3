@@ -27,9 +27,9 @@ CREATE TABLE `offers` (
   `text` text NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `user_id` (`user_id`),
+  KEY `user_id` (`user_id`) USING BTREE,
   CONSTRAINT `offers_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,7 +67,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'seyfer','c3579f6cb2827dad2d94f449f83ae3867c422f60ccc08cd53dc240a2a1bd7f07dcf561a3006a8d3a','user','seyfer',1,'ss@ss.ss');
+INSERT INTO `users` VALUES (1,'seyfer','fb3d3162de2d3c4a101c8acc5c7617dd04d5869eade60e2d56a098b8c090e9e8240deb31a88ca80c','user','seyfer',1,'ss@ss.ss');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -80,4 +80,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-06-08 16:26:04
+-- Dump completed on 2016-06-08 18:33:36

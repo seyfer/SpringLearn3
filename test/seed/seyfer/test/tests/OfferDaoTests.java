@@ -22,8 +22,13 @@ import seed.seyfer.dao.User;
 import seed.seyfer.dao.UsersDao;
 
 @ActiveProfiles("dev")
-@ContextConfiguration(locations = { "classpath:seed/seyfer/config/dao-context.xml",
-		"classpath:seed/seyfer/config/security-context.xml", "classpath:seed/seyfer/test/config/datasource.xml", })
+@ContextConfiguration(locations = { 
+		"classpath:seed/seyfer/config/dao-context.xml",
+		"classpath:seed/seyfer/config/auth-context.xml",
+		"classpath:seed/seyfer/config/security-context.xml", 
+		"classpath:seed/seyfer/config/service-context.xml", 
+		"classpath:seed/seyfer/test/config/datasource.xml", 
+		})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class OfferDaoTests {
 
