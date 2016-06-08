@@ -33,14 +33,15 @@ public class UserDaoTest {
 		JdbcTemplate jdbc = new JdbcTemplate(dataSource);
 
 		jdbc.execute("delete from users");
-		jdbc.execute("delete from authorities");
+//		jdbc.execute("delete from authorities");
 	}
 
 	@Test
 	public void testCreateUser() {
 		Assert.assertEquals("dummy", 1, 1);
 
-		User user = new User("seyfer", "seedseed", true, "user", "ss@ss.ss");
+		User user = new User("seyfer", "seyfer", "seedseed", true, "user", "ss@ss.ss");
+		user.setId(1);
 		boolean userCreationResult = usersDao.create(user);
 
 		Assert.assertTrue("User creation true", userCreationResult);
@@ -52,5 +53,7 @@ public class UserDaoTest {
 		Assert.assertTrue("User exists", usersDao.exists(user.getUsername()));
 		
 		Assert.assertEquals("Identical", user, users.get(0));
+		
+//		return usersDao.getLastUserId();
 	}
 }

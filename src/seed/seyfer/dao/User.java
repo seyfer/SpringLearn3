@@ -7,6 +7,8 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class User {
+	
+	private int id = 0;
 
 	@NotBlank(message = "username can't be blank")
 	@Size(min = 3, max = 16)
@@ -20,6 +22,8 @@ public class User {
 	private boolean enabled = false;
 	private String authority;
 
+	private String name;
+
 	@NotBlank
 	@Email
 	private String email;
@@ -28,13 +32,22 @@ public class User {
 
 	}
 
-	public User(String username, String password, boolean enabled, String authority, String email) {
+	public User(String username, String name, String password, boolean enabled, String authority, String email) {
 		super();
+		this.name = name;
 		this.username = username;
 		this.password = password;
 		this.enabled = enabled;
 		this.authority = authority;
 		this.email = email;
+	}
+
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getEmail() {
@@ -77,10 +90,12 @@ public class User {
 		this.authority = authority;
 	}
 
-	@Override
-	public String toString() {
-		return "User [username=" + username + ", enabled=" + enabled + ", authority=" + authority + ", email=" + email
-				+ "]";
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Override
@@ -90,6 +105,7 @@ public class User {
 		result = prime * result + ((authority == null) ? 0 : authority.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + (enabled ? 1231 : 1237);
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
@@ -115,12 +131,23 @@ public class User {
 			return false;
 		if (enabled != other.enabled)
 			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
 		if (username == null) {
 			if (other.username != null)
 				return false;
 		} else if (!username.equals(other.username))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "User [username=" + username + ", enabled=" + enabled + ", authority=" + authority + ", name=" + name
+				+ ", email=" + email + "]";
 	}
 
 }

@@ -18,6 +18,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import seed.seyfer.dao.Offer;
 import seed.seyfer.dao.OffersDao;
+import seed.seyfer.dao.User;
+import seed.seyfer.dao.UsersDao;
 
 @ActiveProfiles("dev")
 @ContextConfiguration(locations = { "classpath:seed/seyfer/config/dao-context.xml",
@@ -27,6 +29,9 @@ public class OfferDaoTests {
 
 	@Autowired
 	private OffersDao offersDao;
+	
+	@Autowired
+	private UsersDao usersDao;
 
 	@Autowired
 	private DataSource dataSource;
@@ -36,14 +41,16 @@ public class OfferDaoTests {
 		JdbcTemplate jdbc = new JdbcTemplate(dataSource);
 
 		jdbc.execute("delete from offers");
-		jdbc.execute("delete from users");
-		jdbc.execute("delete from authorities");
+//		jdbc.execute("delete from users");
+//		jdbc.execute("delete from authorities");
 	}
 
 	@Test
 	public void testCreateOffer() {
 
-		Offer offer = new Offer("johnwpurcell", "john@caveofprogramming.com", "This is a test offer.");
+		User user = new User("seyfer", "seyfer", "seedseed", true, "user", "ss@ss.ss");
+		user.setId(1);
+		Offer offer = new Offer(user, "This is a test offer.");
 
 		Assert.assertTrue("Offer creation should return true", offersDao.create(offer));
 

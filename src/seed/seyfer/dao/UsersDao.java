@@ -23,6 +23,8 @@ public class UsersDao {
 	@Autowired
 	private PasswordEncoder passworEncoder;
 
+	private int userId;
+
 	public UsersDao() {
 		System.out.println("Loaded" + UsersDao.class.getName());
 	}
@@ -36,6 +38,10 @@ public class UsersDao {
 		this.jdbc = new NamedParameterJdbcTemplate(jdbc);
 	}
 
+	public int getLastUserId() {
+		return userId;
+	}
+
 	@Transactional
 	public boolean create(User user) {
 		// BeanPropertySqlParameterSource parameterSource = new
@@ -44,23 +50,30 @@ public class UsersDao {
 		MapSqlParameterSource parameterSource = new MapSqlParameterSource();
 
 		parameterSource.addValue("username", user.getUsername());
+		parameterSource.addValue("name", user.getName());
 		parameterSource.addValue("password", passworEncoder.encode(user.getPassword()));
 		parameterSource.addValue("email", user.getEmail());
 		parameterSource.addValue("enabled", user.isEnabled());
+		parameterSource.addValue("authority", user.getAuthority());
 
-		KeyHolder keyHolder = new GeneratedKeyHolder();
-		jdbc.update(
-				"insert into users (username, password, email, enabled) "
-						+ "values (:username, :password, :email, :enabled)",
-				parameterSource, keyHolder, new String[] { "id" });
+		if (user.getId() == 0) {
+			KeyHolder keyHolder = new GeneratedKeyHolder();
+			jdbc.update(
+					"insert into users (username, name, password, email, enabled, authority) "
+							+ "values (:username, :name, :password, :email, :enabled, :authority)",
+					parameterSource, keyHolder, new String[] { "id" });
 
-		String userId = keyHolder.getKey().toString();
-		MapSqlParameterSource parameterSourceAuthority = new MapSqlParameterSource();
-		parameterSourceAuthority.addValue("user_id", userId);
-		parameterSourceAuthority.addValue("authority", user.getAuthority());
+			userId = Integer.parseInt(keyHolder.getKey().toString());
+		} else {
+			parameterSource.addValue("id", user.getId());
+			
+			jdbc.update(
+					"insert into users (id, username, name, password, email, enabled, authority) "
+							+ "values (:id, :username, :name, :password, :email, :enabled, :authority)",
+					parameterSource);
 
-		jdbc.update("insert into authorities (user_id, authority) " + "values (:user_id, :authority)",
-				parameterSourceAuthority);
+			userId = user.getId();
+		}
 
 		return true;
 	}
@@ -71,7 +84,10 @@ public class UsersDao {
 	}
 
 	public List<User> getAllUsers() {
-		return jdbc.query("select * from authorities, users where users.id = authorities.user_id",
-				BeanPropertyRowMapper.newInstance(User.class));
+		// return jdbc.query("select * from authorities, users where users.id =
+		// authorities.user_id",
+		// BeanPropertyRowMapper.newInstance(User.class));
+
+		return jdbc.query("select * from users", BeanPropertyRowMapper.newInstance(User.class));
 	}
 }
