@@ -1,11 +1,14 @@
 package seed.seyfer.dao;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -66,7 +69,7 @@ public class UsersDao {
 			userId = Integer.parseInt(keyHolder.getKey().toString());
 		} else {
 			parameterSource.addValue("id", user.getId());
-			
+
 			jdbc.update(
 					"insert into users (id, username, name, password, email, enabled, authority) "
 							+ "values (:id, :username, :name, :password, :email, :enabled, :authority)",
@@ -89,5 +92,36 @@ public class UsersDao {
 		// BeanPropertyRowMapper.newInstance(User.class));
 
 		return jdbc.query("select * from users", BeanPropertyRowMapper.newInstance(User.class));
+	}
+
+	/**
+	 * 
+	 * @param username
+	 * @return
+	 */
+	public User loadByUsername(String username) {
+		MapSqlParameterSource paramMap = new MapSqlParameterSource("username", username);
+		User user = jdbc.queryForObject("select * from users where username=:username", paramMap,
+				new RowMapper<User>() {
+
+					public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+						User user = new User();
+						user.setAuthority(rs.getString("authority"));
+						user.setEmail(rs.getString("email"));
+						user.setEnabled(true);
+						user.setName(rs.getString("name"));
+						user.setUsername(rs.getString("username"));
+						user.setId(rs.getInt("id"));
+						user.setPassword(rs.getString("password"));
+
+						return user;
+					}
+
+				});
+
+		// System.out.println(user); System.exit(0);
+
+		return user;
 	}
 }

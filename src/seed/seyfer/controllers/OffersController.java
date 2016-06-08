@@ -1,5 +1,6 @@
 package seed.seyfer.controllers;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import seed.seyfer.auth.AuthUser;
 import seed.seyfer.dao.Offer;
 import seed.seyfer.service.OffersService;
 
@@ -24,6 +28,8 @@ import seed.seyfer.service.OffersService;
 public class OffersController {
 
 	private OffersService offersService;
+
+	// private UsersService
 
 	public OffersService getOffersService() {
 		return offersService;
@@ -60,7 +66,7 @@ public class OffersController {
 	}
 
 	@RequestMapping(value = "/doCreateOffer", method = RequestMethod.POST)
-	public String doCreateOffer(Model model, @Valid Offer offer, BindingResult result) {
+	public String doCreateOffer(Model model, @Valid Offer offer, BindingResult result, Principal principal) {
 		System.out.println(new Object() {
 		}.getClass().getEnclosingMethod().getName());
 		System.out.println(offer);
@@ -79,6 +85,15 @@ public class OffersController {
 			System.out.println("valid");
 		}
 
+		// String username = principal.getName();
+		// offer.getUser().setUsername(username);
+
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		AuthUser currentUser = (AuthUser) auth.getPrincipal();
+
+		System.out.println((AuthUser) currentUser);
+
+		offer.getUser().setId(currentUser.getId());
 		offersService.create(offer);
 
 		return "redirect:/offers";

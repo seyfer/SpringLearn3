@@ -6,6 +6,8 @@
 
 <c:forEach var="offer" items="${offers}">
     Id ${offer.id}<br />
-    email ${offer.email}<br />
+    Name ${offer.user.name}<br />
+    Email ${offer.user.email}<br />
+    text ${offer.text}<br />
 	<hr>
 </c:forEach>

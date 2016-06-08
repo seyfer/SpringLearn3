@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class User {
-	
+
 	private int id = 0;
 
 	@NotBlank(message = "username can't be blank")
@@ -22,6 +22,8 @@ public class User {
 	private boolean enabled = false;
 	private String authority;
 
+	@NotBlank
+	@Size(min = 1, max = 60)
 	private String name;
 
 	@NotBlank
@@ -45,7 +47,7 @@ public class User {
 	public int getId() {
 		return id;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}

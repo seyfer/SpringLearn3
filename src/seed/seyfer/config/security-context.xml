@@ -4,25 +4,36 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-
 	<security:authentication-manager>
-<!-- 		<security:authentication-provider> -->
-<!-- 			<security:user-service id="staticUserService"> -->
-<!-- 				<security:user name="seyfer" authorities="admin" -->
-<!-- 					password="root" /> -->
-<!-- 				<security:user name="admin" authorities="admin" -->
-<!-- 					password="admin" /> -->
-<!-- 			</security:user-service> -->
-<!-- 		</security:authentication-provider> -->
-		<security:authentication-provider>
+		<!-- <security:authentication-provider> -->
+		<!-- <security:user-service id="staticUserService"> -->
+		<!-- <security:user name="seyfer" authorities="admin" -->
+		<!-- password="root" /> -->
+		<!-- <security:user name="admin" authorities="admin" -->
+		<!-- password="admin" /> -->
+		<!-- </security:user-service> -->
+		<!-- </security:authentication-provider> -->
+		<security:authentication-provider
+			user-service-ref="userDetailService">
 			<security:password-encoder ref="passwordEncoder"></security:password-encoder>
-			<security:jdbc-user-service id="jdbcUserService"
-				data-source-ref="dataSource"
-				authorities-by-username-query="select username,authority from authorities, users where users.id = authorities.user_id and binary username = ?"
-				users-by-username-query="select username, password, enabled from users where binary username = ?" />
+			<!-- <security:jdbc-user-service id="jdbcUserService" -->
+			<!-- data-source-ref="dataSource" -->
+			<!-- authorities-by-username-query="select username,authority from users 
+				where binary username = ?" -->
+			<!-- users-by-username-query="select username, password, enabled from 
+				users where binary username = ?" /> -->
 		</security:authentication-provider>
-
 	</security:authentication-manager>
+
+	<!-- For hashing and salting the password -->
+	<!-- <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/> -->
+	<!-- <security:authentication-manager> -->
+	<!-- <security:authentication-provider ref="authProvider"></security:authentication-provider> -->
+	<!-- </security:authentication-manager> -->
+	<!-- <bean id="authProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider"> -->
+	<!-- <property name="userDetailsService" ref="userDetailService" /> -->
+	<!-- <property name="passwordEncoder" ref="passwordEncoder" /> -->
+	<!-- </bean> -->
 
 	<security:http use-expressions="true">
 
@@ -67,7 +78,7 @@
 		<security:access-denied-handler
 			error-page="/accessDenied" />
 		<security:remember-me key="offersAppKey"
-			user-service-ref="jdbcUserService" />
+			user-service-ref="userDetailService" />
 	</security:http>
 
 	<security:global-method-security

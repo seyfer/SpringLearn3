@@ -36,4 +36,8 @@ public class UsersService {
 	public List<User> getAllUsers() {
 		return this.usersDAO.getAllUsers();
 	}
+
+	public User loadByUsername(String username) {
+		return this.usersDAO.loadByUsername(username);
+	}
 }

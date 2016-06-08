@@ -17,6 +17,11 @@ Will create
 			</td>
 		</tr>
 		<tr>
+			<td>Name: <sf:input type="text" name="name" path="name" /> <br>
+				<sf:errors path="name" cssClass="error"></sf:errors>
+			</td>
+		</tr>
+		<tr>
 			<td>Email: <sf:input type="text" name="email" path="email" /> <br>
 				<sf:errors path="email" cssClass="error"></sf:errors>
 			</td>

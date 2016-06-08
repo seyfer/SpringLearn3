@@ -54,6 +54,7 @@
 		classpath:seed/seyfer/config/dao-context.xml
 		classpath:seed/seyfer/config/service-context.xml
 		classpath:seed/seyfer/config/security-context.xml
+		classpath:seed/seyfer/config/auth-context.xml
 		</param-value>
 	</context-param>
 	<listener>

@@ -73,7 +73,7 @@ public class LoginController {
 		// debug
 		System.out.println(new Object() {
 		}.getClass().getEnclosingMethod().getName());
-		System.out.println(user);
+		
 
 		if (result.hasErrors()) {
 			System.out.println("not validates");
@@ -91,7 +91,9 @@ public class LoginController {
 
 		user.setAuthority("user");
 		user.setEnabled(true);
-
+		
+		System.out.println(user);
+		
 		if (usersService.exists(user.getUsername())) {
 			result.rejectValue("username", "DuplicateKey.user.username");
 			return "newAccount";
