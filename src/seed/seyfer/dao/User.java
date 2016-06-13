@@ -1,13 +1,21 @@
 package seed.seyfer.dao;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
+@Entity
+@Table(name = "users")
 public class User {
 
+	@Id
+	@Column(name = "id")
 	private int id = 0;
 
 	@NotBlank(message = "username can't be blank")
@@ -36,6 +44,18 @@ public class User {
 
 	public User(String username, String name, String password, boolean enabled, String authority, String email) {
 		super();
+		this.name = name;
+		this.username = username;
+		this.password = password;
+		this.enabled = enabled;
+		this.authority = authority;
+		this.email = email;
+	}
+
+	public User(int id, String username, String name, String password, boolean enabled, String authority,
+			String email) {
+		super();
+		this.id = id;
 		this.name = name;
 		this.username = username;
 		this.password = password;

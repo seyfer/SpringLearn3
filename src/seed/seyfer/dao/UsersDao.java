@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -18,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @Component("usersDao")
 public class UsersDao {
 
@@ -26,10 +29,17 @@ public class UsersDao {
 	@Autowired
 	private PasswordEncoder passworEncoder;
 
+	@Autowired
+	private SessionFactory sessionFactory;
+	
 	private int userId;
 
 	public UsersDao() {
 		System.out.println("Loaded" + UsersDao.class.getName());
+	}
+	
+	public Session session() {
+		return sessionFactory.getCurrentSession();
 	}
 
 	public NamedParameterJdbcTemplate getJdbc() {
@@ -46,39 +56,38 @@ public class UsersDao {
 	}
 
 	@Transactional
-	public boolean create(User user) {
-		// BeanPropertySqlParameterSource parameterSource = new
-		// BeanPropertySqlParameterSource(user);
-
-		MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-
-		parameterSource.addValue("username", user.getUsername());
-		parameterSource.addValue("name", user.getName());
-		parameterSource.addValue("password", passworEncoder.encode(user.getPassword()));
-		parameterSource.addValue("email", user.getEmail());
-		parameterSource.addValue("enabled", user.isEnabled());
-		parameterSource.addValue("authority", user.getAuthority());
-
-		if (user.getId() == 0) {
-			KeyHolder keyHolder = new GeneratedKeyHolder();
-			jdbc.update(
-					"insert into users (username, name, password, email, enabled, authority) "
-							+ "values (:username, :name, :password, :email, :enabled, :authority)",
-					parameterSource, keyHolder, new String[] { "id" });
-
-			userId = Integer.parseInt(keyHolder.getKey().toString());
-		} else {
-			parameterSource.addValue("id", user.getId());
-
-			jdbc.update(
-					"insert into users (id, username, name, password, email, enabled, authority) "
-							+ "values (:id, :username, :name, :password, :email, :enabled, :authority)",
-					parameterSource);
-
-			userId = user.getId();
-		}
-
-		return true;
+	public void create(User user) {
+//		MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+//
+//		parameterSource.addValue("username", user.getUsername());
+//		parameterSource.addValue("name", user.getName());
+//		parameterSource.addValue("password", passworEncoder.encode(user.getPassword()));
+//		parameterSource.addValue("email", user.getEmail());
+//		parameterSource.addValue("enabled", user.isEnabled());
+//		parameterSource.addValue("authority", user.getAuthority());
+//
+//		if (user.getId() == 0) {
+//			KeyHolder keyHolder = new GeneratedKeyHolder();
+//			jdbc.update(
+//					"insert into users (username, name, password, email, enabled, authority) "
+//							+ "values (:username, :name, :password, :email, :enabled, :authority)",
+//					parameterSource, keyHolder, new String[] { "id" });
+//
+//			userId = Integer.parseInt(keyHolder.getKey().toString());
+//		} else {
+//			parameterSource.addValue("id", user.getId());
+//
+//			jdbc.update(
+//					"insert into users (id, username, name, password, email, enabled, authority) "
+//							+ "values (:id, :username, :name, :password, :email, :enabled, :authority)",
+//					parameterSource);
+//
+//			userId = user.getId();
+//		}
+				
+		session().save(user);
+		
+		userId = user.getId();
 	}
 
 	public boolean exists(String username) {
@@ -86,12 +95,17 @@ public class UsersDao {
 		return jdbc.queryForObject("select count(*) from users where username=:username", paramMap, Integer.class) > 0;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<User> getAllUsers() {
+		//with separated authorities
 		// return jdbc.query("select * from authorities, users where users.id =
 		// authorities.user_id",
 		// BeanPropertyRowMapper.newInstance(User.class));
 
-		return jdbc.query("select * from users", BeanPropertyRowMapper.newInstance(User.class));
+		//last working pure sql
+//		return jdbc.query("select * from users", BeanPropertyRowMapper.newInstance(User.class));
+		
+		return session().createQuery("from User").list();
 	}
 
 	/**

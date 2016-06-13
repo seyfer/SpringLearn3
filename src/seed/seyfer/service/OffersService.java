@@ -36,4 +36,48 @@ public class OffersService {
 		// TODO Auto-generated method stub
 		offersDAO.getOffer(9999);
 	}
+
+	public boolean hasOffer(String username) {
+		if (username == null) {
+			return false;
+		}
+
+		List<Offer> offers = offersDAO.getOffers(username);
+
+		if (offers.size() == 0) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public Offer getOffer(String username) {
+
+		if (username == null) {
+			return null;
+		}
+
+		List<Offer> offers = offersDAO.getOffers(username);
+		
+		if (offers.size() == 0) {
+			return null;
+		}
+
+		return offers.get(0);
+	}
+
+	public void saveOrUpdate(Offer offer) {
+		System.out.println(offer.getId());
+		
+		if (offer.getId() != 0) {
+			
+			offersDAO.update(offer);
+		} else {
+			offersDAO.create(offer);
+		}
+	}
+
+	public int delete(Offer offer) {
+		return offersDAO.delete(offer.getId());
+	}
 }

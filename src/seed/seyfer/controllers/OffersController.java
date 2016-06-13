@@ -18,6 +18,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import seed.seyfer.auth.AuthUser;
@@ -58,15 +59,27 @@ public class OffersController {
 	}
 
 	@RequestMapping("/createOffer")
-	public String createOffer(Model model) {
+	public String createOffer(Model model, Principal principal) {
 
-		model.addAttribute("offer", new Offer());
+		Offer offer = null;
+		if (principal != null) {
+			String username = principal.getName();
+			offer = offersService.getOffer(username);
+		}
+
+		if (offer == null) {
+			offer = new Offer();
+		}
+
+		model.addAttribute("offer", offer);
 
 		return "createOffer";
 	}
 
 	@RequestMapping(value = "/doCreateOffer", method = RequestMethod.POST)
-	public String doCreateOffer(Model model, @Valid Offer offer, BindingResult result, Principal principal) {
+	public String doCreateOffer(Model model, @Valid Offer offer, BindingResult result, Principal principal,
+			@RequestParam(value = "delete", required = false) String delete) {
+
 		System.out.println(new Object() {
 		}.getClass().getEnclosingMethod().getName());
 		System.out.println(offer);
@@ -94,7 +107,13 @@ public class OffersController {
 		System.out.println((AuthUser) currentUser);
 
 		offer.getUser().setId(currentUser.getId());
-		offersService.create(offer);
+		// offersService.create(offer);
+
+		if (delete != null) {
+			offersService.delete(offer);
+		} else {
+			offersService.saveOrUpdate(offer);
+		}
 
 		return "redirect:/offers";
 	}

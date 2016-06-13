@@ -22,63 +22,55 @@ import seed.seyfer.dao.User;
 import seed.seyfer.dao.UsersDao;
 
 @ActiveProfiles("dev")
-@ContextConfiguration(locations = { 
-		"classpath:seed/seyfer/config/dao-context.xml",
-		"classpath:seed/seyfer/config/auth-context.xml",
-		"classpath:seed/seyfer/config/security-context.xml", 
-		"classpath:seed/seyfer/config/service-context.xml", 
-		"classpath:seed/seyfer/test/config/datasource.xml", 
-		})
+@ContextConfiguration(locations = { "classpath:seed/seyfer/config/dao-context.xml",
+		"classpath:seed/seyfer/config/auth-context.xml", "classpath:seed/seyfer/config/security-context.xml",
+		"classpath:seed/seyfer/config/service-context.xml", "classpath:seed/seyfer/test/config/datasource.xml", })
 @RunWith(SpringJUnit4ClassRunner.class)
 public class OfferDaoTests {
 
 	@Autowired
 	private OffersDao offersDao;
-	
+
 	@Autowired
 	private UsersDao usersDao;
 
 	@Autowired
 	private DataSource dataSource;
 
+	User user1 = new User(1, "seyfer", "Oleg", "seedseed", true, "ROLE_ADMIN", "ss@ss.ss");
+
 	@Before
 	public void init() {
 		JdbcTemplate jdbc = new JdbcTemplate(dataSource);
 
 		jdbc.execute("delete from offers");
-//		jdbc.execute("delete from users");
-//		jdbc.execute("delete from authorities");
 	}
 
 	@Test
-	public void testCreateOffer() {
+	public void testOffers() {
 
-		User user = new User("seyfer", "seyfer", "seedseed", true, "user", "ss@ss.ss");
-		user.setId(1);
-		Offer offer = new Offer(user, "This is a test offer.");
+		Offer offer = new Offer(user1, "This is a test offer.");
 
 		Assert.assertTrue("Offer creation should return true", offersDao.create(offer));
 
 		List<Offer> offers = offersDao.getOffers();
 
 		assertEquals("Should be one offer in database.", 1, offers.size());
-
 		assertEquals("Retrieved offer should match created offer.", offer, offers.get(0));
 
 		// Get the offer with ID filled in.
 		offer = offers.get(0);
-
 		offer.setText("Updated offer text.");
 		Assert.assertTrue("Offer update should return true", offersDao.update(offer));
 
 		Offer updated = offersDao.getOffer(offer.getId());
-
 		assertEquals("Updated offer should match retrieved updated offer", offer, updated);
 
+		List<Offer> userOffers = offersDao.getOffers(user1.getUsername());
+		assertEquals("Should be one offer in database.", 1, offers.size());
+
 		offersDao.delete(offer.getId());
-
 		List<Offer> empty = offersDao.getOffers();
-
 		assertEquals("Offers lists should be empty.", 0, empty.size());
 	}
 

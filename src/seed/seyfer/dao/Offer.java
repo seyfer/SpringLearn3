@@ -7,7 +7,7 @@ import javax.validation.constraints.Size;
 import seed.seyfer.validation.ValidEmail;
 
 public class Offer {
-	private int id;
+	private int id = 0;
 
 	@Size(min = 5, max = 255, message = "text Must be between range")
 	private String text;
@@ -16,7 +16,7 @@ public class Offer {
 
 	public Offer() {
 		super();
-		
+
 		this.user = new User();
 	}
 
@@ -42,7 +42,7 @@ public class Offer {
 	}
 
 	public void setId(int id) {
-		// this.id = id;
+		this.id = id;
 	}
 
 	public String getText() {

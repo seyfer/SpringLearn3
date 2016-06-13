@@ -24,8 +24,8 @@ public class UsersService {
 	}
 
 	@Secured("ROLE_ADMIN")
-	public boolean create(User user) {
-		return this.usersDAO.create(user);
+	public void create(User user) {
+		this.usersDAO.create(user);
 	}
 
 	public boolean exists(String username) {

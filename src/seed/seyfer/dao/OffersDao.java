@@ -41,24 +41,8 @@ public class OffersDao {
 		parameterSource.addValue("id", id);
 
 		Offer offer = jdbc.queryForObject(
-				"select * from offers, users where offers.id=:id and offers.user_id = users.id", parameterSource,
-				new RowMapper<Offer>() {
-
-					public Offer mapRow(ResultSet rs, int rowNum) throws SQLException {
-
-						User user = new User();
-						user.setAuthority(rs.getString("authority"));
-						user.setEmail(rs.getString("email"));
-						user.setEnabled(true);
-						user.setName(rs.getString("name"));
-						user.setUsername(rs.getString("username"));
-
-						Offer offer = new Offer(rs.getInt("id"), user, rs.getString("text"));
-
-						return offer;
-					}
-
-				});
+				"select * from offers, users where offers.id=:id and offers.user_id = users.id and users.enabled=1",
+				parameterSource, new OfferRowMapper());
 
 		return offer;
 	}
@@ -94,24 +78,18 @@ public class OffersDao {
 	public List<Offer> getOffers() {
 
 		List<Offer> offers = jdbc.query(
-				"select * from offers, users where offers.user_id = users.id and users.enabled=1 order by offers.id DESC",
-				new RowMapper<Offer>() {
+				"select *, offers.id as id from offers, users where offers.user_id = users.id and users.enabled=1 order by offers.id DESC",
+				new OfferRowMapper());
 
-					public Offer mapRow(ResultSet rs, int rowNum) throws SQLException {
+		return offers;
+	}
 
-						User user = new User();
-						user.setAuthority(rs.getString("authority"));
-						user.setEmail(rs.getString("email"));
-						user.setEnabled(true);
-						user.setName(rs.getString("name"));
-						user.setUsername(rs.getString("username"));
+	public List<Offer> getOffers(String username) {
 
-						Offer offer = new Offer(rs.getInt("id"), user, rs.getString("text"));
-
-						return offer;
-					}
-
-				});
+		List<Offer> offers = jdbc.query(
+				"select * from offers, users where offers.user_id = users.id and users.enabled=1 and users.username=:username "
+						+ "order by offers.id DESC",
+				new MapSqlParameterSource("username", username), new OfferRowMapper());
 
 		return offers;
 	}

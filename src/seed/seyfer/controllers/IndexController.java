@@ -1,5 +1,6 @@
 package seed.seyfer.controllers;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -20,12 +21,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import seed.seyfer.dao.Offer;
 import seed.seyfer.dao.User;
+import seed.seyfer.service.OffersService;
 import seed.seyfer.service.UsersService;
 
 @Controller
 public class IndexController {
 
+	@Autowired
+	private OffersService offersService;
 	private UsersService usersService;
 	private static Logger logger = LogManager.getLogger(IndexController.class);
 
@@ -39,11 +44,21 @@ public class IndexController {
 	}
 
 	@RequestMapping("/")
-	public String showHome(HttpSession session) {
+	public String showHome(Model model, Principal principal) {
 
 		logger.info("show home page");
-		
-		session.setAttribute("name", "lol");
+
+		List<Offer> offers = offersService.getCurrent();
+
+		boolean hasOffer = false;
+		if (principal != null) {
+//			System.out.println(principal.getName());
+
+			hasOffer = offersService.hasOffer(principal.getName());
+		}
+
+		model.addAttribute("hasOffer", hasOffer);
+		model.addAttribute("offers", offers);
 
 		// debug
 		this.checkRole();
