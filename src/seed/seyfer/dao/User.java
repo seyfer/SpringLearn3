@@ -1,8 +1,14 @@
 package seed.seyfer.dao;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -18,25 +24,29 @@ public class User {
 	@Column(name = "id")
 	private int id = 0;
 
-	@NotBlank(message = "username can't be blank")
-	@Size(min = 3, max = 16)
-	@Pattern(regexp = "^\\w+$", message = "must contain only letters, numbers, underscore")
+	@NotBlank(groups={PersistenceValidationGroup.class, FormValidationGroup.class})
+	@Size(min = 3, max = 16, groups={PersistenceValidationGroup.class, FormValidationGroup.class})
+	@Pattern(regexp = "^\\w+$", groups={PersistenceValidationGroup.class, FormValidationGroup.class})
 	private String username;
 
-	@NotBlank(message = "must not be blank")
-	@Pattern(regexp = "^\\S+$", message = "must not containt spaces")
-	@Size(min = 8, max = 20, message = "password must be between 8 and 20")
+	@NotBlank(groups={PersistenceValidationGroup.class, FormValidationGroup.class})
+	@Pattern(regexp = "^\\S+$", groups={PersistenceValidationGroup.class, FormValidationGroup.class})
+	@Size(min = 8, max = 20, message = "password must be between 8 and 20", groups={FormValidationGroup.class})
 	private String password;
+
 	private boolean enabled = false;
 	private String authority;
 
-	@NotBlank
-	@Size(min = 1, max = 60)
+	@NotBlank(groups={PersistenceValidationGroup.class, FormValidationGroup.class})
+	@Size(min = 1, max = 60, groups={PersistenceValidationGroup.class, FormValidationGroup.class})
 	private String name;
 
-	@NotBlank
-	@Email
+	@NotBlank(groups={PersistenceValidationGroup.class, FormValidationGroup.class})
+	@Email(groups={PersistenceValidationGroup.class, FormValidationGroup.class})
 	private String email;
+	
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="user")
+	private Set<Offer> offers;
 
 	public User() {
 
@@ -118,6 +128,18 @@ public class User {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Set<Offer> getOffers() {
+		return offers;
+	}
+
+	public void setOffers(Set<Offer> offers) {
+		this.offers = offers;
+	}
+	
+	public void addOffer(Offer offer) {
+		this.offers.add(offer);
 	}
 
 	@Override

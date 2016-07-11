@@ -10,21 +10,21 @@
 	<context:annotation-config></context:annotation-config>
 	<context:component-scan base-package="seed.seyfer.controllers"></context:component-scan>
 	<mvc:annotation-driven></mvc:annotation-driven>
-	
+
 	<bean id="userDetailService" class="seed.seyfer.auth.UserDetailServiceImpl" />
-	
-	<bean id="jspViewResolver"
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/WEB-INF/jsps/"></property>
-		<property name="suffix" value=".jsp"></property>
-		<property name="order" value="1" />
-	</bean>
 
 	<mvc:resources location="/resources/" mapping="/static/**"></mvc:resources>
 
 	<bean id="messageSource"
 		class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basename" value="seed.seyfer.messages.messages"></property>
+	</bean>
+
+	<bean id="jspViewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsps/"></property>
+		<property name="suffix" value=".jsp"></property>
+		<property name="order" value="1" />
 	</bean>
 
 	<bean id="tilesViewResolver"

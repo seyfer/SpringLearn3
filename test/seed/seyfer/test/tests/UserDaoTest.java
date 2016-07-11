@@ -6,8 +6,10 @@ import javax.sql.DataSource;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
@@ -22,10 +24,12 @@ import seed.seyfer.dao.UsersDao;
 		"classpath:seed/seyfer/config/auth-context.xml", "classpath:seed/seyfer/config/security-context.xml",
 		"classpath:seed/seyfer/config/service-context.xml", "classpath:seed/seyfer/test/config/datasource.xml", })
 @RunWith(SpringJUnit4ClassRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserDaoTest {
 
 	@Autowired
 	private UsersDao usersDao;
+	
 	@Autowired
 	private DataSource dataSource;
 
@@ -48,26 +52,21 @@ public class UserDaoTest {
 
 		Assert.assertEquals("Must be 1", 1, users.size());
 		Assert.assertEquals("Identical", user1, users.get(0));
-		
+
 		usersDao.create(user2);
-		
+
 		List<User> users2 = usersDao.getAllUsers();
-		
+
 		Assert.assertEquals("Must be 2", 2, users2.size());
 	}
 
 	@Test
-	public void testUsers() {
-		// Assert.assertEquals("dummy", 1, 1);
-
+	public void testExists() {
 		usersDao.create(user1);
+		usersDao.create(user2);
 
-		List<User> users = usersDao.getAllUsers();
-
-		Assert.assertEquals("Must be 1", 1, users.size());
 		Assert.assertTrue("User exists", usersDao.exists(user1.getUsername()));
-		Assert.assertEquals("Identical", user1, users.get(0));
-
-		// return usersDao.getLastUserId();
+		Assert.assertTrue("User exists", usersDao.exists(user2.getUsername()));
+		Assert.assertFalse("User not exists", usersDao.exists("fake test"));
 	}
 }

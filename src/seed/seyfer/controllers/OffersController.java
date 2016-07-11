@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import seed.seyfer.auth.AuthUser;
+import seed.seyfer.dao.FormValidationGroup;
 import seed.seyfer.dao.Offer;
 import seed.seyfer.service.OffersService;
 
@@ -77,7 +79,8 @@ public class OffersController {
 	}
 
 	@RequestMapping(value = "/doCreateOffer", method = RequestMethod.POST)
-	public String doCreateOffer(Model model, @Valid Offer offer, BindingResult result, Principal principal,
+	public String doCreateOffer(Model model, @Validated(value = FormValidationGroup.class) Offer offer,
+			BindingResult result, Principal principal,
 			@RequestParam(value = "delete", required = false) String delete) {
 
 		System.out.println(new Object() {

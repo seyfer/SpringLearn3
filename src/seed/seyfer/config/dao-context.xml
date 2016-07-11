@@ -16,9 +16,31 @@
 			expected-type="javax.sql.DataSource">
 		</jee:jndi-lookup>
 
+		<bean id="sessionFactory"
+			class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+			<property name="dataSource" ref="dataSource"></property>
+			<property name="hibernateProperties">
+				<props>
+					<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+					<prop key="javax.persistence.validation.group.pre-persist">seed.seyfer.dao.PersistenceValidationGroup</prop>
+					<prop key="javax.persistence.validation.group.pre-update">seed.seyfer.dao.PersistenceValidationGroup</prop>
+					<prop key="javax.persistence.validation.group.pre-remove">seed.seyfer.dao.PersistenceValidationGroup</prop>
+				</props>
+			</property>
+			<property name="packagesToScan">
+				<list>
+					<value>seed.seyfer.dao</value>
+				</list>
+			</property>
+		</bean>
+
 		<bean id="transactionManager"
 			class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 			<property name="dataSource" ref="dataSource"></property>
+		</bean>
+
+		<bean id="exceptionProcessor"
+			class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor">
 		</bean>
 
 		<tx:annotation-driven />

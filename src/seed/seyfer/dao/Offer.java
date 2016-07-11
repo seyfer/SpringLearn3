@@ -1,17 +1,32 @@
 package seed.seyfer.dao;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import seed.seyfer.validation.ValidEmail;
 
+@Entity
+@Table(name = "offers")
 public class Offer {
+
+	@Id
+	@Column(name = "id")
 	private int id = 0;
 
-	@Size(min = 5, max = 255, message = "text Must be between range")
+	@Size(min = 5, max = 255, groups={PersistenceValidationGroup.class, FormValidationGroup.class})
+	@Column(name="text")
 	private String text;
 
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="user_id")
 	private User user;
 
 	public Offer() {

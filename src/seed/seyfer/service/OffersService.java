@@ -58,7 +58,7 @@ public class OffersService {
 		}
 
 		List<Offer> offers = offersDAO.getOffers(username);
-		
+
 		if (offers.size() == 0) {
 			return null;
 		}
@@ -67,14 +67,15 @@ public class OffersService {
 	}
 
 	public void saveOrUpdate(Offer offer) {
-		System.out.println(offer.getId());
+//		System.out.println(offer.getId());
+//
+//		if (offer.getId() != 0) {
+//			offersDAO.update(offer);
+//		} else {
+//			offersDAO.create(offer);
+//		}
 		
-		if (offer.getId() != 0) {
-			
-			offersDAO.update(offer);
-		} else {
-			offersDAO.create(offer);
-		}
+		offersDAO.saveOrUpdate(offer);
 	}
 
 	public int delete(Offer offer) {

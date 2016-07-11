@@ -10,11 +10,13 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import seed.seyfer.dao.FormValidationGroup;
 import seed.seyfer.dao.Offer;
 import seed.seyfer.dao.User;
 import seed.seyfer.service.OffersService;
@@ -69,11 +71,10 @@ public class LoginController {
 	}
 
 	@RequestMapping(value = "/doCreateAccount", method = RequestMethod.POST)
-	public String doCreateAccount(@Valid User user, BindingResult result) {
+	public String doCreateAccount(@Validated(FormValidationGroup.class) User user, BindingResult result) {
 		// debug
 		System.out.println(new Object() {
 		}.getClass().getEnclosingMethod().getName());
-		
 
 		if (result.hasErrors()) {
 			System.out.println("not validates");
@@ -91,9 +92,9 @@ public class LoginController {
 
 		user.setAuthority("user");
 		user.setEnabled(true);
-		
+
 		System.out.println(user);
-		
+
 		if (usersService.exists(user.getUsername())) {
 			result.rejectValue("username", "DuplicateKey.user.username");
 			return "newAccount";
