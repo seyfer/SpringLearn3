@@ -62,4 +62,21 @@
 		<put-attribute name="title" value="error!!!"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/error.jsp"></put-attribute>
 	</definition>
+
+	<!-- flow -->
+
+	<definition name="start" extends="offers.base">
+		<put-attribute name="title" value="flow start"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/start.jsp"></put-attribute>
+	</definition>
+
+	<definition name="contact" extends="offers.base">
+		<put-attribute name="title" value="Send Message"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/contact.jsp"></put-attribute>
+	</definition>
+
+	<definition name="messageSent" extends="offers.base">
+		<put-attribute name="title" value="Message sent"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/messageSent.jsp"></put-attribute>
+	</definition>
 </tiles-definitions>

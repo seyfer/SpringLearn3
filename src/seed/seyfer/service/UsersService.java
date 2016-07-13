@@ -6,21 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
+import seed.seyfer.dao.Message;
+import seed.seyfer.dao.MessagesDao;
 import seed.seyfer.dao.User;
 import seed.seyfer.dao.UsersDao;
 
 @Service("usersService")
 public class UsersService {
 
+	@Autowired
 	private UsersDao usersDAO;
+
+	@Autowired
+	private MessagesDao messagesDao;
 
 	public UsersDao getOffersDAO() {
 		return usersDAO;
-	}
-
-	@Autowired
-	public void setOffersDAO(UsersDao usersDAO) {
-		this.usersDAO = usersDAO;
 	}
 
 	@Secured("ROLE_ADMIN")
@@ -39,5 +40,11 @@ public class UsersService {
 
 	public User loadByUsername(String username) {
 		return this.usersDAO.loadByUsername(username);
+	}
+
+	public void sendMessage(Message message) {
+		System.out.println("sendMessage: " + message);
+		
+		messagesDao.create(message);
 	}
 }

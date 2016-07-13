@@ -1,11 +1,14 @@
 package seed.seyfer.dao;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -18,35 +21,40 @@ import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
+
+	private static final long serialVersionUID = 4097239028750268202L;
 
 	@Id
 	@Column(name = "id")
 	private int id = 0;
 
-	@NotBlank(groups={PersistenceValidationGroup.class, FormValidationGroup.class})
-	@Size(min = 3, max = 16, groups={PersistenceValidationGroup.class, FormValidationGroup.class})
-	@Pattern(regexp = "^\\w+$", groups={PersistenceValidationGroup.class, FormValidationGroup.class})
+	@NotBlank(groups = { PersistenceValidationGroup.class, FormValidationGroup.class })
+	@Size(min = 3, max = 16, groups = { PersistenceValidationGroup.class, FormValidationGroup.class })
+	@Pattern(regexp = "^\\w+$", groups = { PersistenceValidationGroup.class, FormValidationGroup.class })
 	private String username;
 
-	@NotBlank(groups={PersistenceValidationGroup.class, FormValidationGroup.class})
-	@Pattern(regexp = "^\\S+$", groups={PersistenceValidationGroup.class, FormValidationGroup.class})
-	@Size(min = 8, max = 20, message = "password must be between 8 and 20", groups={FormValidationGroup.class})
+	@NotBlank(groups = { PersistenceValidationGroup.class, FormValidationGroup.class })
+	@Pattern(regexp = "^\\S+$", groups = { PersistenceValidationGroup.class, FormValidationGroup.class })
+	@Size(min = 8, max = 20, message = "password must be between 8 and 20", groups = { FormValidationGroup.class })
 	private String password;
 
 	private boolean enabled = false;
 	private String authority;
 
-	@NotBlank(groups={PersistenceValidationGroup.class, FormValidationGroup.class})
-	@Size(min = 1, max = 60, groups={PersistenceValidationGroup.class, FormValidationGroup.class})
+	@NotBlank(groups = { PersistenceValidationGroup.class, FormValidationGroup.class })
+	@Size(min = 1, max = 60, groups = { PersistenceValidationGroup.class, FormValidationGroup.class })
 	private String name;
 
-	@NotBlank(groups={PersistenceValidationGroup.class, FormValidationGroup.class})
-	@Email(groups={PersistenceValidationGroup.class, FormValidationGroup.class})
+	@NotBlank(groups = { PersistenceValidationGroup.class, FormValidationGroup.class })
+	@Email(groups = { PersistenceValidationGroup.class, FormValidationGroup.class })
 	private String email;
-	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="user")
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private Set<Offer> offers;
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+	private Set<Message> messages;
 
 	public User() {
 
@@ -137,9 +145,21 @@ public class User {
 	public void setOffers(Set<Offer> offers) {
 		this.offers = offers;
 	}
-	
+
 	public void addOffer(Offer offer) {
 		this.offers.add(offer);
+	}
+
+	public void addMessage(Message message) {
+		this.messages.add(message);
+	}
+
+	public Set<Message> getMessages() {
+		return messages;
+	}
+
+	public void setMessages(Set<Message> messages) {
+		this.messages = messages;
 	}
 
 	@Override

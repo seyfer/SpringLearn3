@@ -25,7 +25,7 @@ import seed.seyfer.dao.UsersDao;
 		"classpath:seed/seyfer/config/service-context.xml", "classpath:seed/seyfer/test/config/datasource.xml", })
 @RunWith(SpringJUnit4ClassRunner.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class UserDaoTest {
+public class UserDaoTests {
 
 	@Autowired
 	private UsersDao usersDao;

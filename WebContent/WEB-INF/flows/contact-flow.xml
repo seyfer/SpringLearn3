@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow
+        http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd"
+	start-state="contact">
+
+	<var name="message" class="seed.seyfer.dao.Message" />
+
+	<!-- <action-state id="prepareFlow"> -->
+	<!-- <evaluate expression="contactFlowHandler.prepareFlowForm()" -->
+	<!-- result="flowScope.client" /> -->
+	<!-- <transition to="start" /> -->
+	<!-- </action-state> -->
+
+	<view-state id="contact" model="message">
+		<transition on="send" to="prepareMessage"></transition>
+	</view-state>
+
+	<action-state id="prepareMessage">
+		<evaluate expression="contactFlowHandler.prepareUserInMessage(message)"
+			result="flowScope.message" />
+		<transition to="sendMessage"></transition>
+	</action-state>
+
+	<action-state id="sendMessage">
+		<evaluate expression="usersService.sendMessage(message)"></evaluate>
+		<transition to="messageSent"></transition>
+	</action-state>
+
+	<view-state id="messageSent"></view-state>
+
+	<!-- <view-state id="start" model="message"> -->
+	<!-- </view-state> -->
+
+</flow>
