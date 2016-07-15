@@ -4,14 +4,26 @@ import java.io.Serializable;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import seed.seyfer.validation.ValidEmail;
 
 @Entity
 @Table(name = "messages")
+//@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@messageId")
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Message implements Serializable {
 
 	private static final long serialVersionUID = -2758689251965039891L;
@@ -19,13 +31,22 @@ public class Message implements Serializable {
 	@Id
 	private int id;
 
+	@Size(min = 5, max = 100)
 	private String subject;
+	
+	@Size(min = 5, max = 255)
 	private String content;
+	
+	@NotBlank
+	@Size(min = 1, max = 60)
 	private String name;
+	
+	@ValidEmail
 	private String email;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
+	@JsonManagedReference
 	private User user;
 
 	@Transient

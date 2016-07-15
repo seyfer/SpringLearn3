@@ -12,19 +12,19 @@
 
 	<input type="hidden" name="_eventId" value="send" />
 
-	<input type="hidden" name="username" value="seyfer">
+	<!-- 	<input type="hidden" name="username" value="seyfer"> -->
 
 	<table class="formtable">
 		<tr>
 			<td class="label">Your name:</td>
-			<td><sf:input class="control" path="name" type="text" /><br />
+			<td><sf:input class="control" path="name" type="text" value="${fromUser.name}" /><br />
 				<div class="error">
 					<sf:errors path="name"></sf:errors>
 				</div></td>
 		</tr>
 		<tr>
 			<td class="label">Your email:</td>
-			<td><sf:input class="control" path="email" type="text" /><br />
+			<td><sf:input class="control" path="email" type="text" value="${fromUser.email}" /><br />
 				<div class="error">
 					<sf:errors path="email"></sf:errors>
 				</div></td>

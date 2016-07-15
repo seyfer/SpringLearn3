@@ -14,6 +14,10 @@
 	<!-- </action-state> -->
 
 	<view-state id="contact" model="message">
+		<on-entry>
+			<set name="flowScope.fromUser" value="usersService.loadByUsername(currentUser.name)"></set>
+			<set name="message.username" value="requestParameters.username"></set>
+		</on-entry>
 		<transition on="send" to="prepareMessage"></transition>
 	</view-state>
 

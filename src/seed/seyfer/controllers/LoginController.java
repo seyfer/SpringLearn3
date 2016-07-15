@@ -1,5 +1,11 @@
 package seed.seyfer.controllers;
 
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -14,15 +20,19 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import seed.seyfer.dao.FormValidationGroup;
+import seed.seyfer.dao.Message;
 import seed.seyfer.dao.Offer;
 import seed.seyfer.dao.User;
 import seed.seyfer.service.OffersService;
 import seed.seyfer.service.UsersService;
 
 @Controller
+@EnableWebMvc
 public class LoginController {
 
 	private UsersService usersService;
@@ -110,5 +120,26 @@ public class LoginController {
 		}
 
 		return "accountCreated";
+	}
+
+//	headers = "Accept=*/*", 
+	@RequestMapping(value = "/getMessages", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public Map<String, Object> getMessages(Principal principal) {
+
+		List<Message> messages = null;
+
+		if (principal == null) {
+			messages = new ArrayList<>();
+		} else {
+			String username = principal.getName();
+			messages = usersService.getMessages(username);
+		}
+
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("messages", messages);
+		data.put("number", messages.size());
+
+		return data;
 	}
 }

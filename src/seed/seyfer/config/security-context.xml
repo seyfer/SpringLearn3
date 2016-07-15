@@ -57,6 +57,8 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/message"
 			access="permitAll" />
+		<security:intercept-url pattern="/getMessages"
+			access="isAuthenticated()" />
 		<!-- <security:intercept-url pattern="/logout" -->
 		<!-- access="permitAll" /> -->
 		<security:intercept-url pattern="/loggedout"

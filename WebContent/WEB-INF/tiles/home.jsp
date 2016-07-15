@@ -10,7 +10,11 @@
 <body>
 
 	<c:forEach var="offer" items="${offers}">
-    Id ${offer.id} - Username: ${offer.user.username}<br />
+    Id ${offer.id} - Username: ${offer.user.username}
+    <a
+			href="<c:url value='/message?username=${offer.user.username}'></c:url>">
+			Send message </a>
+		<br />
     Name ${offer.user.name}<br />
     Email ${offer.user.email}<br />
     text ${offer.text}<br />

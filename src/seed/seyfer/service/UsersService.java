@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import seed.seyfer.dao.Message;
 import seed.seyfer.dao.MessagesDao;
@@ -46,5 +47,9 @@ public class UsersService {
 		System.out.println("sendMessage: " + message);
 		
 		messagesDao.create(message);
+	}
+
+	public List<Message> getMessages(String username) {
+		return messagesDao.getMessages(username);
 	}
 }

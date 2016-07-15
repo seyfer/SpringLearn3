@@ -6,11 +6,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
@@ -19,8 +16,15 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name = "users")
+//@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@userId")
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 4097239028750268202L;
@@ -34,6 +38,7 @@ public class User implements Serializable {
 	@Pattern(regexp = "^\\w+$", groups = { PersistenceValidationGroup.class, FormValidationGroup.class })
 	private String username;
 
+	@JsonIgnore
 	@NotBlank(groups = { PersistenceValidationGroup.class, FormValidationGroup.class })
 	@Pattern(regexp = "^\\S+$", groups = { PersistenceValidationGroup.class, FormValidationGroup.class })
 	@Size(min = 8, max = 20, message = "password must be between 8 and 20", groups = { FormValidationGroup.class })
@@ -50,10 +55,12 @@ public class User implements Serializable {
 	@Email(groups = { PersistenceValidationGroup.class, FormValidationGroup.class })
 	private String email;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
+	@JsonBackReference
 	private Set<Offer> offers;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
+	@JsonBackReference
 	private Set<Message> messages;
 
 	public User() {
