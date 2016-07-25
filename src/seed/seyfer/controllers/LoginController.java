@@ -51,13 +51,19 @@ public class LoginController {
 		return "accessDenied";
 	}
 
+	@RequestMapping("/messages")
+	public String showMessages() {
+		return "messages";
+	}
+	
 	@RequestMapping("/loggedout")
 	public String showLoggedout() {
 		return "loggedout";
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ModelAndView showLogin(@RequestParam(value = "error", required = false) String error,
+	public ModelAndView showLogin(HttpServletRequest request,
+			@RequestParam(value = "error", required = false) String error,
 			@RequestParam(value = "logout", required = false) String logout) {
 
 		ModelAndView model = new ModelAndView();
@@ -66,10 +72,17 @@ public class LoginController {
 		}
 
 		if (logout != null) {
-			model.addObject("message", "Logged out from JournalDEV successfully.");
+			model.addObject("message", "Logged out successfully.");
 		}
 
 		model.setViewName("login");
+
+		// String referrer = request.getHeader("Referer");
+		String referrer = "/";
+		if (referrer != null) {
+			request.getSession().setAttribute("url_prior_login", referrer);
+		}
+
 		return model;
 	}
 
@@ -122,7 +135,7 @@ public class LoginController {
 		return "accountCreated";
 	}
 
-//	headers = "Accept=*/*", 
+	// headers = "Accept=*/*",
 	@RequestMapping(value = "/getMessages", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public Map<String, Object> getMessages(Principal principal) {

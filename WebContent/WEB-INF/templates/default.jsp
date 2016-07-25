@@ -20,6 +20,10 @@
 		<tiles:insertAttribute name="header"></tiles:insertAttribute>
 	</div>
 
+	<div class="toolbar">
+		<tiles:insertAttribute name="toolbar"></tiles:insertAttribute>
+	</div>
+
 	<div class="content">
 		<tiles:insertAttribute name="content"></tiles:insertAttribute>
 	</div>

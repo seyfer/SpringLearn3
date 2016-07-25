@@ -48,6 +48,11 @@
 		<security:intercept-url pattern="/doCreateOffer"
 			access="isAuthenticated()" />
 
+		<security:intercept-url pattern="/getMessages"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/messages"
+			access="isAuthenticated()" />
+
 		<security:intercept-url pattern="/" access="permitAll" />
 		<security:intercept-url pattern="/static/**"
 			access="permitAll" />
@@ -57,8 +62,7 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/message"
 			access="permitAll" />
-		<security:intercept-url pattern="/getMessages"
-			access="isAuthenticated()" />
+
 		<!-- <security:intercept-url pattern="/logout" -->
 		<!-- access="permitAll" /> -->
 		<security:intercept-url pattern="/loggedout"
@@ -75,7 +79,9 @@
 		<security:intercept-url pattern="/**" access="denyAll" />
 
 		<security:form-login login-page="/login"
-			authentication-failure-url="/login?error=true" />
+			authentication-failure-url="/login?error=true"
+			authentication-success-handler-ref="loginSuccessHandler"
+			always-use-default-target="true" />
 		<!-- <security:csrf disabled="true" /> -->
 		<security:logout logout-success-url="/loggedout" />
 
@@ -83,6 +89,7 @@
 			error-page="/accessDenied" />
 		<security:remember-me key="offersAppKey"
 			user-service-ref="userDetailService" />
+
 	</security:http>
 
 	<security:global-method-security

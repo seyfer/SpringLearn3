@@ -6,11 +6,7 @@
 
 <a class="title" href="${pageContext.request.contextPath}/">HOME</a>
 
-<a class="headerItem" href="${pageContext.request.contextPath}/offers">Offers</a>
-<a class="headerItem"
-	href="${pageContext.request.contextPath}/createOffer">createOffer</a>
-
-<a class="headerItem" href="<c:url value="/admin" />">Admin</a>
+<%-- <a class="headerItem" href="${pageContext.request.contextPath}/offers">Offers</a> --%>
 
 <div class="login">
 

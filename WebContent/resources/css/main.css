@@ -92,3 +92,48 @@ a.headerItem {
 input.delete {
 	border: 1px solid red;
 }
+
+div.toolbar {
+	
+}
+
+div.toolbar a {
+	margin-right: 20px;
+}
+
+div.messages div.message {
+	margin-bottom: 20px;
+	border-bottom: 1px dashed brown;
+}
+
+div.messages div.message span.subject {
+	color: brown;
+	font-size: large;
+	font-weight: bolder;
+}
+
+div.messages div.message span.content {
+	display: block;
+	font-style: italic;
+}
+
+div.messages div.message span.name {
+	display: block;
+	color: brown;
+	font-size: medium;
+}
+
+div.messages div.message form {
+	padding: 20px;
+}
+
+div.messages div.message form textarea {
+	width: 600px;
+	height: 200px;
+}
+
+div.messages div.message form input.replybutton {
+	display: block;
+	font-size: large;
+	border: 1px solid gray;
+}

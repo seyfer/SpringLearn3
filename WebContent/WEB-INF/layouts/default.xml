@@ -5,6 +5,7 @@
 <tiles-definitions>
 	<definition name="offers.base" template="/WEB-INF/templates/default.jsp">
 		<put-attribute name="includes" value=""></put-attribute>
+		<put-attribute name="toolbar" value="/WEB-INF/tiles/toolbar.jsp"></put-attribute>
 		<put-attribute name="title" value="homepage"></put-attribute>
 		<put-attribute name="header" value="/WEB-INF/tiles/header.jsp"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/content.jsp"></put-attribute>
@@ -61,6 +62,11 @@
 	<definition name="error" extends="offers.base">
 		<put-attribute name="title" value="error!!!"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/error.jsp"></put-attribute>
+	</definition>
+
+	<definition name="messages" extends="offers.base">
+		<put-attribute name="title" value="messages!!!"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/messages.jsp"></put-attribute>
 	</definition>
 
 	<!-- flow -->
